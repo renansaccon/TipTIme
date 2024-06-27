@@ -23,6 +23,13 @@ class MainActivity : AppCompatActivity() {
             calculateButtonOnClick()
         }
 
+        if (savedInstanceState != null) {
+            val tip = savedInstanceState.getString("tip")
+            binding.tipResult.text = tip
+        } else{
+            binding.tipResult.text = getString( R.string.tip_amount_s, "-" )
+        }
+
     }
 
     private fun calculateButtonOnClick() {
@@ -56,8 +63,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         val formattedTip = NumberFormat.getCurrencyInstance().format( tip )  //Formata a variável tip para monetário de acordo com o idioma do aparelho do usuário
-        binding.tipResult.text = getString( R.string.tip_amount_s, formattedTip.toString()) //Puxa novamente o valor da string tip_amount_s e substituirá o %s pelo tip.toString() (Quando não formatado)
+        binding.tipResult.text = getString( R.string.tip_amount_s, formattedTip) //Puxa novamente o valor da string tip_amount_s e substituirá o %s pelo tip.toString() (Quando não formatado)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString("tip", binding.tipResult.text.toString())
+    }
 
 }
